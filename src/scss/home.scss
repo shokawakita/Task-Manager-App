@@ -1,0 +1,626 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css");
+
+
+// flex style
+@mixin flexStyle($text1: center, $text2: space-between) {
+  display: flex;
+  align-items: $text1;
+  justify-content: $text2;
+}
+
+// text style for hover
+@mixin textStyle(
+  $value: 4px, //padding
+  $a: 255, //before background
+  $b: 1, //before opacity
+  $c: 238, //after background(hover)
+  $d: 1 //after opacity(hover)
+  ) {
+  border-radius: 4px;
+  padding: $value;
+  background-color: rgb($a, $a, $a, $b);
+  cursor: pointer;
+
+  &:hover {background: rgb($c, $c, $c, $d)}
+}
+
+// icon style for hover
+@mixin iconStyle($x: 4px, $y: 4px) {
+  padding: $x $y;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {background-color: rgb(150, 150, 150);}
+}
+
+// input style include focus
+@mixin inputStyle($outline: unset) {
+  border: unset;
+  background-color: unset;
+  padding: 8px 0;
+  width: calc(100% - 12px);
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:focus {outline: $outline;}
+}
+
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+
+  p, h1, h2, h3 {margin: 0;}
+  
+  h1,h2 {font-weight: normal;}
+  
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bi-plus {font-size: 1.5rem;}
+  
+  .bi-three-dots, 
+  .bi-chevron-left,
+  .bi-star,
+  .bi-star-fill,
+  .bi-x-lg  {@include iconStyle(8px, 8px);}
+
+  .bi-person-circle,
+  .bi-bell {
+    @include iconStyle(12px, 12px);
+    font-size: 1.5rem;
+  }
+
+  .bi-chevron-left {
+    transform: none;
+    transition: transform .3s;
+  }
+
+  input[type="text"] {@include inputStyle();}
+}
+
+.home-header {
+  @include flexStyle();
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 56px;
+  z-index: 20;
+  height: 56px;
+  color: white;
+  background-color: rgb(36, 36, 36);
+
+  .header-list1 {
+    @include flexStyle();
+
+    h1 {
+      font-size: 1rem;
+      margin-left: 32px;
+    }
+
+    .home-header-menu {
+
+      ul {
+        @include flexStyle();
+        margin-left: 32px;
+        font-size: .8rem;
+        
+        
+        li {
+          @include textStyle(10px, 100, 8, 125, .8);
+          color: white;
+          background-color: unset;
+
+          span {margin-left: 12px;}
+
+          & + li {margin-left: 32px;}
+        }
+      }
+    }
+  }
+
+  .header-list2 {
+    @include flexStyle();
+    margin-right: 32px;
+  }
+}
+
+.work-space {
+  min-height: calc(100vh - 56px);
+  margin-top: 56px;
+  display: flex;
+  transition: background-color .3s;
+  transition-delay: .5s;
+
+  // homeMenu-------------------------------
+  .home-menu {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    z-index: 5;
+    color: white;
+    background-color: rgba(75, 75, 75, 0.9);
+    width: 256px;
+    transition: width .3s;
+
+    &.hidden {
+      width: 38px;
+      position: unset;
+      
+      & > div {
+        border: unset;
+
+        h2 {display: none;}
+      } 
+      
+      & > nav {display: none;}
+    }
+
+    & > div {
+      @include flexStyle();
+      border-bottom: 1px solid black;
+      padding: 32px;
+
+      span {
+        transform: none;
+        transition: transform .5s;
+    
+        &.toggle {
+          transform: rotate(180deg) translateX(12px);
+          background-color: rgba(50, 50, 50, 0.8);
+          padding: 6px 0;
+          border-radius: 50%;
+        }
+      }
+    }
+  
+    & > nav {
+      padding-top: 24px;
+
+      // &::-webkit-scrollbar {
+      //   width: 0;
+      // }
+
+      .home-menu-title {
+        @include flexStyle();
+        padding: 24px;
+
+        span {@include iconStyle();}
+      }
+  
+      .home-menu-list {
+        min-height: 600px;
+        max-height: calc(100vh - 56px - 137px - 83.5px - 24px);
+        overflow-y: scroll;
+        position: fixed;
+        z-index: 2;
+
+        &::-webkit-scrollbar {
+          width: 0;
+        }
+
+        & > li {
+          @include flexStyle(center, unset);
+          cursor: pointer;
+          position: relative;
+          max-height: 20px;
+          padding: 8px 0;
+
+          &:nth-child(1){margin-top: 8px;}
+
+          & + li {margin-top: 12px;}
+          
+          &:hover {
+            & > div:nth-child(1) {
+              width: 256px;
+              background-color: rgb(72, 72, 72);
+              
+              & > div:nth-child(1) input, p {width: 92px;}
+              & > div:nth-child(2) span:nth-child(1) {display: block;}
+            }
+          }
+          
+          &.appear {& > div {background-color: rgb(100, 100, 100);}}
+          
+          & > div {
+            display: flex;
+            padding: 8px 0;
+
+            & > div:nth-child(1) {
+              @include flexStyle();
+              margin-left: 24px;
+              gap: 12px;
+  
+              span {
+                z-index: 3;
+                width: 28px;
+                height: 20px;
+                //change
+              }
+
+              p, input {
+                padding: 8px 0;
+                color: white;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 1rem;
+              }
+              p {
+                display: inline-block;
+                line-height: 18.5px;
+                width: 136px;
+                
+                &.hidden {display: none;}
+              }
+              
+              input {
+                width: 136px;
+                display: none;
+
+                &.appear {display: block;}
+              }
+            }
+          
+
+            & > div:nth-child(2) {
+              margin-right: 24px;
+              @include flexStyle();
+  
+              span:nth-child(1) {
+                margin-right: 12px;
+                display: none;
+              }
+
+              span:nth-child(2) {
+                .bi-star, .bi-star-fill {font-size: 1rem;}
+              }
+            } 
+          }
+        }        
+      }
+    }
+  }
+
+  // board-------------------------------
+  .board {
+    margin-left: 256px;
+    width: calc(100% - 256px);
+    // overflow-x: scroll;
+    transition: width .3s;
+    
+    &.wide {
+      margin-left: 0;
+      width: calc(100% - 256px + 218px);
+      overflow-x: hidden;
+    }
+
+    header > nav {
+      padding: 12px;
+
+      & > ul {
+        @include flexStyle(center, flex-end);
+        gap: 32px;
+        font-size: .8rem;
+
+        li {
+          @include textStyle(10px, 100, 8, 125, .8);
+          color: white;
+        }
+
+        li:nth-child(5) {
+          span > i {
+            padding: 0;
+            &:hover {background-color: unset;}
+          }
+        }
+      }
+
+      .board-header-menu {
+        display: flex;
+
+        & > li {
+          font-size: .7rem;
+          color: #eee;
+          
+        }
+      }
+    }
+
+    .board-main {
+      min-width: calc(100% - 24px);
+      min-height: calc(100vh - 63.5px - 56px - 24px);
+      overflow-x: scroll;
+      font-size: .9rem;
+      display: flex;
+      align-items: flex-start ;
+      padding: 12px;
+      scrollbar-width: thin;
+
+      .board-main-list {
+        display: flex;
+        align-items: flex-start;
+        
+        .board-list {
+          min-width: 256px;
+          @include textStyle(8px, 245, 1, 245, 1);
+          cursor: unset;
+          
+          & + .board-list {margin-left: 8px;}
+
+          &.current {background-color:rgb(230, 230, 230)}
+
+          .board-list-title {
+            @include flexStyle();
+            padding: 4px;
+            font-weight: bold;
+            line-height: 12px;
+          }
+  
+          .board-list-items {
+            padding: 32px 2px 8px 2px;
+            line-height: 24px;
+  
+            & > div {
+              & + div {margin-top: 8px;}
+              
+              & > li {
+
+                @include textStyle();
+                @include flexStyle();
+                box-shadow: 0 1px rgb(192, 192, 192);
+                max-width: 252px;
+                
+                & > p, input {
+                  overflow-x: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;                  
+                  width: 217px;
+                  cursor: pointer;
+                }
+
+                & > p {
+                  user-select: none;
+                  padding: 8px 0;
+                  height: 15.5px;
+                  font-size: 15.5px;;
+                  line-height: 15.5px;
+                  display: block;
+                  
+                  &.hidden {
+                    display: none;
+                  }
+                }
+                
+                .check {
+                  display: none;
+
+                  &.appear {
+                    height: 39.5px;
+                    padding: 4px 12px;
+                    font-size: 6px;
+  
+                    & > span {
+                      font-size: 6px;
+                      color: #eee;
+                    }
+                  }
+                }
+
+                & > input {
+                  display: none;
+                  &.appear {display: block;}
+                }
+  
+  
+                .item-menu {
+                  // 本来ここに記入するが冗長なので下に記入する
+                }
+                
+
+              }
+            }
+          }
+  
+          .board-list-add-item {
+            user-select: none;
+            
+            .add-item {
+              @include textStyle(4px, 245, 1, 200, 1);
+              @include flexStyle(center, unset);
+              
+              span {margin-right: 12px;}
+
+              &.hidden {display: none;}
+            }
+
+            .create-item {
+              padding-top: 8px;
+              display: none;
+
+              &.appear {
+                display: block;
+                margin: 0 auto;
+              
+                .item-create-form {
+                  @include flexStyle(center, flex-end);
+                  gap: 24px;
+                  margin: 0;
+                  // span {cursor: pointer;}
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .add-list {
+        margin-left: 8px;
+        min-width: 256px;
+        margin-right: 16px;
+
+        & > div {
+          & > div:nth-child(1) {
+            @include textStyle(10px, 100, 8, 125, .8);
+            @include flexStyle();
+            color: white;
+          }
+
+          & > div:nth-child(2){display: none;}
+
+          &.appear {
+
+            & > div:nth-child(1) {display: none;}
+
+            & > div:nth-child(2) {
+              display: block;
+              animation-name: anime;
+              animation-duration: .3s;              
+
+              & > div {
+                @include textStyle(12px, 245, 1, 245, 1);
+
+                .add-list-button {
+                  @include flexStyle(center, unset);
+                  padding-top: 12px;
+                  margin: 4px 0;
+                  gap: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop {
+  background-color: unset !important;
+}
+
+// Item Menu Style（こちらに記述）
+.item-name-edit {
+  padding: 24px 32px !important;
+  width: unset !important;
+}
+
+.check-list {
+  
+  .check-form {
+    @include flexStyle();
+    @include textStyle();
+    width: 50%;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .create-check {
+    display: none;
+    animation-name: anime;
+    animation-duration: .6s;
+
+
+    &.appear {
+      display: block;
+
+
+      input {
+        border: 2px solid black;
+        padding: 8px 12px;
+        width: 70%;
+        font-size: 1rem;
+        border-radius: 4px;
+        margin-right: 32px;
+      }
+    }
+  }
+
+  ul {
+    margin-top: 24px;
+    width: 100%;
+    height: 330px;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    
+    li {
+      @include flexStyle();
+      padding: 8px 24px;
+    
+      // & + li {margin-top: 12px;}
+      
+      textarea {
+        width: 100%;
+        padding: 8px 24px;
+        letter-spacing: .07rem;
+      }
+    }
+  }
+}
+
+ 
+#search {
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+// ボードメニューの編集のanimation
+#board-menu-name-edit, 
+#theme-color-form,
+.board-menu-options.move,
+#active-item-form {
+  animation-name: anime;
+  animation-duration: .6s;
+}
+
+@keyframes anime {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+// 63.5 56
+// .list-text {
+//   display: none;
+//   position: fixed;
+//   top: 30%;
+//   left: 30%;
+
+//   &.appear {
+//     display: block;
+//   }
+// }
+
+
+
+// それぞれのサイズ
+// HomeHeader
+// height: 64px;
+// width: 100%;
+// HomeMenu
+// height: 100%;
+// width: 256px;
+// Board
+// height: 100%;
+// width: 100% - 256px;
+
+// background-colors
+// header: rgb(36, 36, 36);
+// menu: rgb(72, 72, 72)
+// board: 
