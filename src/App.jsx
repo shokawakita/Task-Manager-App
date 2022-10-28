@@ -870,15 +870,19 @@ const App = () => {
         }
       })
       
-      item.current = true;
       const newLists = board[0].lists.map(list => {
         return {
           id: list.id, name: list.name,
           current: list.current,
-          items: (list === startList ? startItems : (list === endList ? endItems : list.items))
+          items: (list === endList ? endItems : list.items.map(item => {
+            return {id: item.id, label: item.label, name: item.name, comment: item.comment, edit: item.edit, checkLists: item.checkLists, time: item.time, 
+            current: false,}
+          }))
         }
       })
 
+      item.current = true;
+      
       const newBoards = boards.map(board => {
         return {
           id: board.id, title: board.title, opacity: board.opacity, current: board.current, color: board.color, isFavorite: board.isFavorite, edit: board.edit,
